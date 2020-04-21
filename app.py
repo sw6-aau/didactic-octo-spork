@@ -64,7 +64,7 @@ def train():
     
     os.system('python2 main.py ' + '--data ' + build_data + ' --save ' + build_model + ' --save ' + build_model + ' --horizon ' + horizon +
               ' --dropout ' + dropout + ' --hidSkip ' + skip_rnn + ' --epochs ' + epoch + ' --hidRNN ' + hid_rnn + ' --window ' + window_rnn +
-              ' --highway_window ' + window_hw + ' --output_fun ' + af_output+ ' --hidCNN ' + hid_cnn)
+              ' --highway_window ' + window_hw + ' --L1Loss False --output_fun None ' + ' --hidCNN ' + hid_cnn)
 
     upload_blob("astep-storage", build_model, build_model)
     return build_id
