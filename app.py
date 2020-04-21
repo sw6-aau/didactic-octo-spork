@@ -54,7 +54,7 @@ def train():
     dropout = request.args.get("dropout")
     skip_rnn = request.args.get("skip_rnn")
     epoch = request.args.get("epoch")
-    ae_hid_cnn = request.args.get("ae_hid_cnn") # NOT YET IMPLEMENTED; MISSING PARSER ARGS
+    hid_cnn = request.args.get("hid_cnn")
     hid_rnn = request.args.get("hid_rnn")
     hid_skip_rnn = request.args.get("hid_skip_rnn")# DONT KNOW WHERE IS
     window_rnn = request.args.get("window_rnn")
@@ -64,7 +64,7 @@ def train():
     
     os.system('python2 main.py ' + '--data ' + build_data + ' --save ' + build_model + ' --save ' + build_model + ' --horizon ' + horizon +
               ' --dropout ' + dropout + ' --hidSkip ' + skip_rnn + ' --epochs ' + epoch + ' --hidRNN ' + hid_rnn + ' --window ' + window_rnn +
-              ' --highway_window ' + window_hw + ' --output_fun ' + af_output)
+              ' --highway_window ' + window_hw + ' --output_fun ' + af_output+ ' --hidCNN ' + hid_cnn)
 
     upload_blob("astep-storage", build_model, build_model)
     return build_id
