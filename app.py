@@ -59,10 +59,10 @@ def train():
     hid_skip_rnn = request.args.get("hid_skip_rnn")# DONT KNOW WHERE IS
     window_rnn = request.args.get("window_rnn")
     window_hw = request.args.get("windows_hw")
-    af_output = request.args.get("af_output")
+    af_output = request.args.get("af_output") # NOT YET IMPLEMENTED; MISSING PARSER ARGS
     af_ae = request.args.get("af_ae") # NOT YET IMPLEMENTED; MISSING PARSER ARGS
     
-    os.system('python2 main.py ' + '--data ' + build_data + ' --save ' + build_model + ' --save ' + build_model + ' --horizon ' + horizon +
+    os.system('python2 main.py ' + '--data ' + build_data + ' --save ' + build_model + ' --horizon ' + horizon +
               ' --dropout ' + dropout + ' --hidSkip ' + skip_rnn + ' --epochs ' + epoch + ' --hidRNN ' + hid_rnn + ' --window ' + window_rnn +
               ' --highway_window ' + window_hw + ' --L1Loss False --output_fun None ' + ' --hidCNN ' + hid_cnn)
 
@@ -73,10 +73,15 @@ def train():
 @app.route('/predict', methods=['GET'])
 def predict():
     build_id = request.args.get("build_id")
-    
-    #os.system('python2 predict.py', "--data " + build_id, "--save " + build_id, "--L1Loss False", "--Output_fun None")
-   # process.wait() # Wait for training to complete.
-    
+    datafile_id = request.args.get("datafile_id")
+    build_model = build_id + '.pt'
+    build_predict = build_id + '.predict'
+    download_blob("astep-storage", build_model, build_model)
+    download_blob("astep-storage", datafile_id, datafile_id)
+
+    os.system('python2 predict.py' + ' --data ' + datafile_id + ' --save ' + build_model + ' --hidCNN 50 --hidRNN 50 --L1Loss False --output_fun None --epochs 1000')
+
+    upload_blob("astep-storage", "output.csv", build_predict)
     return build_id
 
 @app.route('/test', methods=['GET'])
